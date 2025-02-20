@@ -1,0 +1,21 @@
+[project]
+name = "testapi"
+version = "0.1.0"
+description = "Test API"
+authors = [
+    {name = "Artem",email = "bedintema@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django (>=5.1.6,<6.0.0)",
+    "djangorestframework (>=3.15.2,<4.0.0)",
+    "djangorestframework-simplejwt (>=5.4.0,<6.0.0)",
+    "whitenoise (>=6.9.0,<7.0.0)",
+    "drf-spectacular (>=0.28.0,<0.29.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
