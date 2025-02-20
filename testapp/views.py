@@ -6,6 +6,8 @@ from django.http import HttpResponse
 import csv
 from rest_framework.permissions import IsAuthenticated
 
+from testapp.task import send_shop_update_email
+
 
 class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Organization.objects.prefetch_related('shops')
@@ -35,3 +37,8 @@ class ShopViewSet(viewsets.ModelViewSet):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        shop = serializer.instance
+        send_shop_update_email(shop.id, 'bedintema@gmail.com')
