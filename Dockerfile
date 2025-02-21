@@ -2,8 +2,7 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-RUN pip install poetry &&\
-    export PATH="/root/.local/bin:$PATH"
+RUN pip install poetry
 
 COPY pyproject.toml poetry.lock ./
 
