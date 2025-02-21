@@ -2,7 +2,7 @@ from testapp.models import Organization, Shop
 from testapp.serializers import OrganizationSerializer, ShopSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 import csv
 from rest_framework.permissions import IsAuthenticated
 import logging
@@ -18,7 +18,7 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     @action(detail=True, methods=['get'], url_path='shops_file')
-    def shops_file(self, request: Any, pk: int = None, *args: Any, **kwargs: Any) -> HttpResponse:
+    def shops_file(self, request: HttpRequest, pk: int, *args: Any, **kwargs: Any) -> HttpResponse:
         try:
             logger.info(f"Запрос на скачивание файла магазинов для организации {pk}")
             organization = self.get_object()
@@ -54,7 +54,7 @@ class ShopViewSet(viewsets.ModelViewSet):
         shop_id = self.kwargs['pk']
         try:
             logger.info(f"Обновление магазина с ID {shop_id}")
-            super().perform_update(serializer)
+            super().prefetch_related(serializer)
             shop = serializer.instance
             send_shop_update_email(shop.id, 'bedintema@gmail.com')
             logger.info(f"Email о обновлении магазина с ID {shop_id} отправлен")
