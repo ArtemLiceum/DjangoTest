@@ -1,0 +1,13 @@
+#site-name a {
+    color: #ff5733 !important;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+input[type="submit"], .button {
+    background-color: #ff5733 !important;
+    color: white !important;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+}

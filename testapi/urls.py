@@ -30,6 +30,9 @@ router.register(r'shops', ShopViewSet, basename='shop')
 urlpatterns = [
     path('api/', include(router.urls)),
 
+    # Админка
+    path('admin/', admin.site.urls),
+
     # Документация
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),  # схема
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),  # Swagger UI

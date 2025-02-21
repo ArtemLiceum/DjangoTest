@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'testapp.log_api_middleware.LogApiMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
@@ -61,7 +62,8 @@ ROOT_URLCONF = 'testapi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,6 +142,11 @@ LOGGING = {
         },
     },
     'loggers': {
+        'api_method_logger': {  # Кастомный логгер
+            'handlers': ['console', 'file_info'],
+            'level': 'INFO',
+            'propagate': False,
+        },
         'django': {
             'handlers': ['console', 'file_debug', 'file_info', 'file_warning', 'file_error'],
             'level': 'DEBUG',
@@ -210,6 +217,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
