@@ -7,6 +7,7 @@ import csv
 from rest_framework.permissions import IsAuthenticated
 import logging
 from testapp.task import send_shop_update_email
+from typing import Any
 
 logger = logging.getLogger("api")
 
@@ -17,7 +18,7 @@ class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     @action(detail=True, methods=['get'], url_path='shops_file')
-    def shops_file(self, request, pk=None, *args, **kwargs):
+    def shops_file(self, request: Any, pk: int = None, *args: Any, **kwargs: Any) -> HttpResponse:
         try:
             logger.info(f"Запрос на скачивание файла магазинов для организации {pk}")
             organization = self.get_object()
@@ -49,7 +50,7 @@ class ShopViewSet(viewsets.ModelViewSet):
     serializer_class = ShopSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_update(self, serializer):
+    def perform_update(self, serializer: ShopSerializer) -> None:
         shop_id = self.kwargs['pk']
         try:
             logger.info(f"Обновление магазина с ID {shop_id}")

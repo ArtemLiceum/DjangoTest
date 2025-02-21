@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from testapp.models import Organization, Shop
+from typing import Any
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -9,7 +10,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
         model = Organization
         fields = ['name', 'description', 'shops']
 
-    def get_shops(self, obj):
+    def get_shops(self, obj: Organization) -> list[dict[str, Any]]:
         shops = obj.shops.filter(is_deleted=False)
         return ShopSerializer(shops, many=True).data
 
