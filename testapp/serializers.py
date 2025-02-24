@@ -18,4 +18,4 @@ class OrganizationSerializer(serializers.ModelSerializer):
 class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
-        fields = ['name', 'description', 'address', 'index', 'is_deleted']
+        fields = ['organization_id', 'name', 'description', 'address', 'index', 'is_deleted']

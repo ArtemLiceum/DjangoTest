@@ -75,10 +75,10 @@ class ShopAPITest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['name'], self.shop.name)
 
-    '''
+
     def test_create_shop(self):
         data = {
-            "organization_id_id": self.organization.id,
+            "organization_id": self.organization.id,
             "name": "New Shop",
             "description": "New shop",
             "address": "New St",
@@ -88,17 +88,13 @@ class ShopAPITest(TestCase):
         response = self.client.post(reverse('shop-list'), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Shop.objects.filter(name="New Shop").exists())
-    '''
+
 
     def test_update_shop(self):
         data = {
             "name": "Updated Shop",
-            "description": self.shop.description,
-            "address": self.shop.address,
-            "index": self.shop.index,
-            "is_deleted": self.shop.is_deleted
         }
-        response = self.client.put(reverse('shop-detail', args=[self.shop.id]), data, format='json')
+        response = self.client.patch(reverse('shop-detail', args=[self.shop.id]), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.shop.refresh_from_db()
         self.assertEqual(self.shop.name, "Updated Shop")
