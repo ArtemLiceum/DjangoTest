@@ -103,3 +103,29 @@ class ShopAPITest(TestCase):
         response = self.client.delete(reverse('shop-detail', args=[self.shop.id]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Shop.objects.filter(id=self.shop.id).exists())
+
+    def test_update_shop_unauthenticated(self):
+        """Действие без аутентификации"""
+        self.client.credentials()  # удаляем токен
+        data = {"name": "Unauthorized Update"}
+        response = self.client.patch(reverse('shop-detail', args=[self.shop.id]), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_update_shop_invalid_data(self):
+        """Попытка обновления c некорректными данными"""
+        data = {
+            "name": "",  # Некорректное значение
+            "description": self.shop.description,
+            "address": self.shop.address,
+            "index": self.shop.index,
+            "is_deleted": self.shop.is_deleted
+        }
+        response = self.client.put(reverse('shop-detail', args=[self.shop.id]), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_update_nonexistent_shop(self):
+        """Попытка обновления несуществующего магазина"""
+        data = {"name": "Nonexistent Shop"}
+        response = self.client.patch(reverse('shop-detail', args=[-1]), data,
+                                     format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
